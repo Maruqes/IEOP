@@ -1,5 +1,6 @@
 import express from 'express';
 import productController from './controllers/products.js';
+import * as httpHelper from './services/http.js';
 
 const app = express();
 app.use(express.json());
