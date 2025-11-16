@@ -56,28 +56,21 @@ async function sendReq(url, method = httpMethod.Get, payload = undefined) {
 
 	const res = await fetch('https://www.vendus.pt/ws/v1.1/' + url, options);
 
-	if (!res.ok) {
-		const text = await res.text();
-		throw new Error(`HTTP ${res.status}: ${text}`);
-	}
-
 	const text = await res.text();
-	let data;
+
+	let data = null;
 
 	try {
-		data = text ? JSON.parse(text) : {};
+		data = text ? JSON.parse(text) : null;
 	} catch {
-		// non-JSON response — wrap as object
-		data = { text };
+		data = text || null;
 	}
 
-	// ensure we always return a plain object
-	if (!isValidOBJECT(data)) {
-		data = { data };
-	}
-
-	console.log("called " + url + " with success");
-	return data;
+	return {
+		ok: res.ok,
+		status: res.status, 
+		data            
+	};
 }
 
 //obrigado gpt
@@ -148,4 +141,21 @@ function filterData(data, toSave = []) {
 	return res
 }
 
-export { sendReq, httpMethod, filterData };
+function GetDataFromRequest(req, requiredFields, optionalFields) {
+	const allFields = [...requiredFields, ...optionalFields]
+
+	const missingFields = requiredFields.filter(field => !req.body[field]);
+	if (missingFields.length > 0) {
+		throw new Error(`Missing required fields: ${missingFields.join(', ')}`)
+	}
+
+	const clientData = {};
+	for (let i = 0; i < allFields.length; i++) {
+		if (req.body[allFields[i]] !== undefined) {
+			clientData[allFields[i]] = req.body[allFields[i]];
+		}
+	}
+	return clientData
+}
+
+export { sendReq, httpMethod, filterData, GetDataFromRequest };
