@@ -17,7 +17,7 @@ async function GetProductById(req, res, next) {
 	try {
 		var id = req.params.id;
 		var data = await productService.GetProductById(id)
-		res.send(filterData(data, ["id", "prices", "reference", "stock_store", "description", "images.m"]));
+		res.send(filterData(data.data, ["id", "prices", "reference", "stock_store", "description", "images.m"]));
 	} catch (err) {
 		next(err);
 	}
