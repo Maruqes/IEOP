@@ -99,10 +99,11 @@ async function GetCart(req, res) {
 
 router.post('/', PostClient);
 router.get('/', GetClient);
-router.get('/:id', GetClientByID);
 
 router.post('/cart/add', AddToCart)
 router.delete('/cart/remove', RemoveFromCart)
 router.get('/cart', GetCart)
+
+router.get('/:id', GetClientByID);
 
 export default router;
