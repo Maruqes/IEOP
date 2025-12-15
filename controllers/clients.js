@@ -46,9 +46,63 @@ async function PostClient(req, res) {
 }
 
 
+async function AddToCart(req, res) {
+	const { UserID, ProductID, Qnt } = req.body;
+
+	if (!UserID || !ProductID || Qnt === undefined || Qnt === null) {
+		return res.status(400).json({ error: "Missing fields" });
+	}
+
+	const qntInt = Number.parseInt(Qnt, 10);
+
+	if (!Number.isInteger(qntInt) || qntInt <= 0) {
+		return res.status(400).json({ error: "Qnt must be a positive integer" });
+	}
+
+	const updated = productService.AddToCart(UserID, ProductID, qntInt);
+	return res.status(200).json(updated);
+}
+
+async function RemoveFromCart(req, res) {
+	const { UserID, ProductID, Qnt } = req.body;
+
+	if (!UserID || !ProductID) {
+		return res.status(400).json({ error: "Missing fields" });
+	}
+
+	let qntInt = undefined;
+	if (Qnt !== undefined && Qnt !== null) {
+		qntInt = Number.parseInt(Qnt, 10);
+		if (!Number.isInteger(qntInt) || qntInt <= 0) {
+			return res.status(400).json({ error: "Qnt must be a positive integer when provided" });
+		}
+	}
+
+	try {
+		const updated = productService.RemoveFromCart(UserID, ProductID, qntInt);
+		return res.status(200).json(updated);
+	} catch (err) {
+		return res.status(400).json({ error: err.message });
+	}
+}
+
+async function GetCart(req, res) {
+	const { userId } = req.query;
+
+	if (!userId) {
+		return res.status(400).json({ error: "Missing userId" });
+	}
+
+	const cart = productService.GetCart(userId);
+	return res.status(200).json(cart);
+}
 
 router.post('/', PostClient);
 router.get('/', GetClient);
 router.get('/:id', GetClientByID);
+
+router.post('/cart/add', AddToCart)
+router.delete('/cart/remove', RemoveFromCart)
+router.get('/cart', GetCart)
 
 export default router;
