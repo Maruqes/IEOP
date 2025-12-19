@@ -61,5 +61,7 @@ export async function RemoveFromCart(userId, productId, quantity) {
 
 export async function GetCart(userId) {
 	const cart = getOrCreateCart(userId);
-	return await normalizeCartResponse(cart);
+	const response = await normalizeCartResponse(cart);
+	const totalItems = Array.from(cart.values()).reduce((sum, qty) => sum + qty, 0);
+	return { ...response, totalItems };
 }
