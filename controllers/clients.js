@@ -59,7 +59,7 @@ async function AddToCart(req, res) {
 		return res.status(400).json({ error: "Qnt must be a positive integer" });
 	}
 
-	const updated = productService.AddToCart(UserID, ProductID, qntInt);
+	const updated = await productService.AddToCart(UserID, ProductID, qntInt);
 	return res.status(200).json(updated);
 }
 
@@ -79,7 +79,7 @@ async function RemoveFromCart(req, res) {
 	}
 
 	try {
-		const updated = productService.RemoveFromCart(UserID, ProductID, qntInt);
+		const updated = await productService.RemoveFromCart(UserID, ProductID, qntInt);
 		return res.status(200).json(updated);
 	} catch (err) {
 		return res.status(400).json({ error: err.message });
@@ -93,7 +93,7 @@ async function GetCart(req, res) {
 		return res.status(400).json({ error: "Missing userId" });
 	}
 
-	const cart = productService.GetCart(userId);
+	const cart = await productService.GetCart(userId);
 	return res.status(200).json(cart);
 }
 

@@ -32,14 +32,14 @@ export async function GetClientByID(id) {
 	return await httpHelper.sendReq(`/clients/${id}`, httpHelper.httpMethod.Get);
 }
 
-export function AddToCart(userId, productId, quantity) {
+export async function AddToCart(userId, productId, quantity) {
 	const cart = getOrCreateCart(userId);
 	const existing = cart.get(productId) || 0;
 	cart.set(productId, existing + quantity);
-	return normalizeCartResponse(cart);
+	return await normalizeCartResponse(cart);
 }
 
-export function RemoveFromCart(userId, productId, quantity) {
+export async function RemoveFromCart(userId, productId, quantity) {
 	const cart = getOrCreateCart(userId);
 	if (!cart.has(productId)) {
 		throw new Error('Product not in cart');
@@ -47,7 +47,7 @@ export function RemoveFromCart(userId, productId, quantity) {
 
 	if (quantity === undefined) {
 		cart.delete(productId);
-		return normalizeCartResponse(cart);
+		return await normalizeCartResponse(cart);
 	}
 
 	const newQty = cart.get(productId) - quantity;
@@ -56,10 +56,10 @@ export function RemoveFromCart(userId, productId, quantity) {
 	} else {
 		cart.delete(productId);
 	}
-	return normalizeCartResponse(cart);
+	return await normalizeCartResponse(cart);
 }
 
-export function GetCart(userId) {
+export async function GetCart(userId) {
 	const cart = getOrCreateCart(userId);
-	return normalizeCartResponse(cart);
+	return await normalizeCartResponse(cart);
 }
