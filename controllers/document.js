@@ -42,9 +42,36 @@ async function PostDocuments(req, res) {
 	}
 }
 
+async function GetHistory(req, res) {
+	const userId = req.query.userId;
+	if (!userId) {
+		return res.status(400).json({ error: 'userId is required' });
+	}
+	const history = documentService.GetDocumentHistory(userId);
+	return res.json(history);
+}
 
+async function GetDocumentById(req, res, next) {
+	try {
+		const id = req.params.id;
+		if (!id) {
+			return res.status(400).json({ error: 'id is required' });
+		}
+		const data = await documentService.GetDocument();
+
+		const found = (data.data || []).find(doc => String(doc.id) === String(id));
+		if (!found) {
+			return res.status(404).json({ error: 'Document not found' });
+		}
+		return res.json(found);
+	} catch (err) {
+		next(err);
+	}
+}
 
 router.post('/', PostDocuments);
 router.get('/', GetDocuments);
+router.get('/history', GetHistory);
+router.get('/:id', GetDocumentById);
 
 export default router;
