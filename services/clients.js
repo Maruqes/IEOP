@@ -1,4 +1,5 @@
 import * as httpHelper from './http.js';
+import * as productService from '../services/products.js';
 
 // Simple in-memory cart storage keyed by user ID
 const carts = new Map();
@@ -10,10 +11,11 @@ function getOrCreateCart(userId) {
 	return carts.get(userId);
 }
 
-function normalizeCartResponse(cartMap) {
+async function normalizeCartResponse(cartMap) {
 	const items = [];
 	for (const [productId, quantity] of cartMap.entries()) {
-		items.push({ productId, quantity });
+		var product = await productService.GetProductById(productId)
+		items.push({ productId, product, quantity });
 	}
 	return { items };
 }
