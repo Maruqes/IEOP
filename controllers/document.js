@@ -20,7 +20,7 @@ async function PostDocuments(req, res) {
 	try {
 		const docData = httpHelper.GetDataFromRequest(
 			req,
-			['items'],
+			['items', 'userId'],
 			[
 
 			]
@@ -33,7 +33,7 @@ async function PostDocuments(req, res) {
 		}]
 
 		console.log(docData)
-		const result = await documentService.PostDocument(docData);
+		const result = await documentService.PostDocument(docData, docData["userId"]);
 		return res.status(result.status).json(result.data);
 
 	} catch (err) {
