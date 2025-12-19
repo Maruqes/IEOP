@@ -97,12 +97,36 @@ async function GetCart(req, res) {
 	return res.status(200).json(cart);
 }
 
+
+async function UpdateCart(req, res) {
+	const { UserID, ProductID, Qnt } = req.body;
+
+	if (!UserID || !ProductID || Qnt === undefined || Qnt === null) {
+		return res.status(400).json({ error: "Missing fields" });
+	}
+
+	const qntInt = Number.parseInt(Qnt, 10);
+
+	if (!Number.isInteger(qntInt) || qntInt < 0) {
+		return res.status(400).json({ error: "Qnt must be a non-negative integer" });
+	}
+
+	try {
+		const updated = await productService.UpdateCart(UserID, ProductID, qntInt);
+		return res.status(200).json(updated);
+	} catch (err) {
+		return res.status(400).json({ error: err.message });
+	}
+}
+
+
 router.post('/', PostClient);
 router.get('/', GetClient);
 
 router.post('/cart/add', AddToCart)
 router.delete('/cart/remove', RemoveFromCart)
 router.get('/cart', GetCart)
+router.put('/cart/update', UpdateCart);
 
 router.get('/:id', GetClientByID);
 

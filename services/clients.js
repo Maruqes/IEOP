@@ -70,3 +70,15 @@ export async function GetCart(userId) {
 	}, 0);
 	return { ...response, totalItems, totalPrice };
 }
+
+// Atualiza a quantidade de um produto no carrinho
+export async function UpdateCart(userId, productId, quantity) {
+	const cart = getOrCreateCart(userId);
+	if (quantity === 0) {
+		// Se quantidade for zero, remove o produto do carrinho
+		cart.delete(productId);
+	} else {
+		cart.set(productId, quantity);
+	}
+	return await normalizeCartResponse(cart);
+}
