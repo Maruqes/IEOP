@@ -63,5 +63,10 @@ export async function GetCart(userId) {
 	const cart = getOrCreateCart(userId);
 	const response = await normalizeCartResponse(cart);
 	const totalItems = Array.from(cart.values()).reduce((sum, qty) => sum + qty, 0);
-	return { ...response, totalItems };
+	const totalPrice = response.items.reduce((sum, item) => {
+		const productData = item.product && item.product.data ? item.product.data : null;
+		const price = productData && productData.gross_price ? Number(productData.gross_price) : 0;
+		return sum + price * item.quantity;
+	}, 0);
+	return { ...response, totalItems, totalPrice };
 }
