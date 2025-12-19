@@ -69,9 +69,27 @@ async function GetDocumentById(req, res, next) {
 	}
 }
 
+async function DownloadPdfById(req, res, next) {
+	try {
+		const id = req.params.id;
+		if (!id) {
+			return res.status(400).json({ error: 'id is required' });
+		}
+		const result = await documentService.DownloadPdf(id);
+		if (!result.ok) {
+			return res.status(result.status).send(result.data);
+		}
+		res.setHeader('Content-Type', result.contentType || 'application/pdf');
+		return res.status(result.status).send(result.data);
+	} catch (err) {
+		next(err);
+	}
+}
+
 router.post('/', PostDocuments);
 router.get('/', GetDocuments);
 router.get('/history', GetHistory);
+router.get('/:id.pdf', DownloadPdfById);
 router.get('/:id', GetDocumentById);
 
 export default router;

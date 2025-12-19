@@ -158,4 +158,4 @@ function GetDataFromRequest(req, requiredFields, optionalFields) {
 	return clientData
 }
 
-export { sendReq, httpMethod, filterData, GetDataFromRequest };
+export { sendReq, httpMethod, filterData, GetDataFromRequest, getToken };

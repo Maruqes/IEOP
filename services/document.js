@@ -43,3 +43,25 @@ export function GetDocumentHistory(userId) {
 	}
 	return userDocumentsMap.get(userId);
 }
+
+
+
+
+export async function DownloadPdf(id) {
+	const tokenzita = httpHelper.getToken();
+
+	const res = await fetch(`https://www.vendus.pt/ws/v1.1//documents/${id}.pdf`, {
+		headers: {
+			Authorization: 'Bearer ' + tokenzita
+		}
+	});
+
+	const buffer = Buffer.from(await res.arrayBuffer());
+
+	return {
+		ok: res.ok,
+		status: res.status,
+		contentType: res.headers.get('content-type'),
+		data: buffer
+	};
+}
