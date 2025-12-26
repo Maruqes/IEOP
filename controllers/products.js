@@ -8,7 +8,7 @@ const router = express.Router();
 async function GetProducts(req, res, next) {
 	try {
 		var data = await productService.GetProducts()
-		res.send(filterData(data.data, ["id", "prices", "reference", "compound.stock.stock", "description", "images.m", "category"]));
+		res.send(filterData(data.data, ["id", "prices", "reference", "compound.stock.stock", "description", "images.m"]));
 	} catch (err) {
 		next(err);
 	}
@@ -18,7 +18,7 @@ async function GetProductById(req, res, next) {
 	try {
 		var id = req.params.id;
 		var data = await productService.GetProductById(id)
-		res.send(filterData(data.data, ["id", "prices", "reference", "stock_store", "description", "images.m", "category"]));
+		res.send(filterData(data.data, ["id", "prices", "reference", "stock_store", "description", "images.m"]));
 	} catch (err) {
 		next(err);
 	}
