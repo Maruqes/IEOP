@@ -54,7 +54,7 @@ async function sendReq(url, method = httpMethod.Get, payload = undefined) {
 	const options = { method, headers };
 	if (payload !== undefined) options.body = JSON.stringify(payload);
 
-	const res = await fetch('https://www.vendus.pt/ws/v1.2/' + url, options);
+	const res = await fetch('https://www.vendus.pt/ws/v1.1/' + url, options);
 
 	const text = await res.text();
 
@@ -68,8 +68,8 @@ async function sendReq(url, method = httpMethod.Get, payload = undefined) {
 
 	return {
 		ok: res.ok,
-		status: res.status,
-		data
+		status: res.status, 
+		data            
 	};
 }
 
