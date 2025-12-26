@@ -79,9 +79,6 @@ export async function PostDocument(data, userId, email) {
 		);
 
 		return res;
-
-
-		return res;
 	} catch (error) {
 		throw error;
 	}

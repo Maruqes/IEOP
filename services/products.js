@@ -1,4 +1,5 @@
 import * as httpHelper from './http.js';
+import * as mongoDb from '../services/mongo.js';
 
 export async function GetProducts() {
 	return await httpHelper.sendReq('/products', httpHelper.httpMethod.Get);
