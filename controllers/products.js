@@ -2,6 +2,8 @@ import express from 'express';
 import * as productService from '../services/products.js';
 import { filterData } from '../services/http.js';
 import * as mongoService from '../services/mongo.js';
+import { OMelhorMiddleWareJaVisto } from '../services/clients.js';
+
 
 const router = express.Router();
 
@@ -47,9 +49,9 @@ async function PostSpecs(req, res, next) {
 }
 
 
-router.get('/', GetProducts);
-router.get('/specs/:id', GetSpecs)
-router.post('/specs/:id', PostSpecs)
+router.get('/', OMelhorMiddleWareJaVisto, GetProducts);
+router.get('/specs/:id', OMelhorMiddleWareJaVisto, GetSpecs)
+router.post('/specs/:id', OMelhorMiddleWareJaVisto, PostSpecs)
 
-router.get('/:id', GetProductById);
+router.get('/:id', OMelhorMiddleWareJaVisto, GetProductById);
 export default router;

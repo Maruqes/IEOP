@@ -1,5 +1,6 @@
 import * as httpHelper from './http.js';
 import * as productService from '../services/products.js';
+import { v4 as uuidv4 } from 'uuid';
 
 // Simple in-memory cart storage keyed by user ID
 const carts = new Map();
@@ -81,4 +82,33 @@ export async function UpdateCart(userId, productId, quantity) {
 		cart.set(productId, quantity);
 	}
 	return await normalizeCartResponse(cart);
+}
+
+const loginsDuvidosos = new Map();
+
+export function LoginTrolado(UserID) {
+	let myuuid = uuidv4();
+	loginsDuvidosos.set(UserID, myuuid)
+	return myuuid
+}
+
+export function Logout(UserID) {
+	loginsDuvidosos.set(UserID, "")
+}
+
+export function CheckLogin(token) {
+	for (const value of loginsDuvidosos.values()) {
+		if (value === token && token !== "") {
+			return true;
+		}
+	}
+	return false;
+}
+
+export async function OMelhorMiddleWareJaVisto(req, res, next) {
+	const authHeader = req.headers['authorization'] || req.headers['Authorization'];
+	if (!CheckLogin(authHeader)) {
+		return res.status(401).json({ error: 'Unauthorized' });
+	}
+	next();
 }

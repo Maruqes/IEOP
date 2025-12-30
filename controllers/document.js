@@ -2,6 +2,8 @@ import express from 'express';
 import * as documentService from '../services/document.js';
 import { filterData } from '../services/http.js';
 import * as httpHelper from '../services/http.js';
+import { OMelhorMiddleWareJaVisto } from '../services/clients.js';
+
 
 
 const router = express.Router();
@@ -86,10 +88,10 @@ async function DownloadPdfById(req, res, next) {
 	}
 }
 
-router.post('/', PostDocuments);
-router.get('/', GetDocuments);
-router.get('/history', GetHistory);
-router.get('/:id.pdf', DownloadPdfById);
-router.get('/:id', GetDocumentById);
+router.post('/',OMelhorMiddleWareJaVisto, PostDocuments);
+router.get('/',OMelhorMiddleWareJaVisto, GetDocuments);
+router.get('/history',OMelhorMiddleWareJaVisto, GetHistory);
+router.get('/:id.pdf',OMelhorMiddleWareJaVisto, DownloadPdfById);
+router.get('/:id',OMelhorMiddleWareJaVisto, GetDocumentById);
 
 export default router;
