@@ -49,9 +49,9 @@ async function PostSpecs(req, res, next) {
 }
 
 
-router.get('/', OMelhorMiddleWareJaVisto, GetProducts);
-router.get('/specs/:id', OMelhorMiddleWareJaVisto, GetSpecs)
+router.get('/', GetProducts);
+router.get('/specs/:id', GetSpecs)
 router.post('/specs/:id', OMelhorMiddleWareJaVisto, PostSpecs)
 
-router.get('/:id', OMelhorMiddleWareJaVisto, GetProductById);
+router.get('/:id', GetProductById);
 export default router;
