@@ -136,7 +136,7 @@ async function loginUserDuvidoso(req, res) {
 	}
 }
 
-async function logoutUserDuvidoso(params) {
+async function logoutUserDuvidoso(req, res) {
 	const { UserID } = req.body;
 	if (!UserID) {
 		return res.status(400).json({ error: "opa preciso de \"UserID\" digo eu" });
