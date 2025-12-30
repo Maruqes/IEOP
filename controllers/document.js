@@ -91,7 +91,7 @@ async function DownloadPdfById(req, res, next) {
 router.post('/',OMelhorMiddleWareJaVisto, PostDocuments);
 router.get('/',OMelhorMiddleWareJaVisto, GetDocuments);
 router.get('/history',OMelhorMiddleWareJaVisto, GetHistory);
-router.get('/:id.pdf',OMelhorMiddleWareJaVisto, DownloadPdfById);
+router.get('/:id.pdf', DownloadPdfById);
 router.get('/:id',OMelhorMiddleWareJaVisto, GetDocumentById);
 
 export default router;
